@@ -1,0 +1,1 @@
+# This lab implements the use of an embedded WiFi dev module (ESP32) and RESTful API server. Status updates are sent from each tank in use to the database which is stored in Level and provides data on the tank id and water level. 
