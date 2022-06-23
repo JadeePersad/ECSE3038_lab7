@@ -7,6 +7,13 @@
 int getWaterLevel();
 #define StatusLed 2
 
+const int tempsensor = 34;
+
+int getWaterLevel(){ 
+  float waterlevel=(((analogRead(tempsensor)/4095)*5)/0.01);
+  return waterlevel;
+}
+
 void setup() {
   Serial.begin(115200);
   pinMode(StatusLed,OUTPUT);
@@ -21,8 +28,10 @@ void setup() {
   Serial.print("Wifi Connection: ");
   Serial.println(WiFi.localIP());
 }
-int level = 0;
+
+int level;
 void loop() {
+
   level=getWaterLevel();
 
   if(level>=80 && level<=100){
@@ -32,9 +41,7 @@ void loop() {
   }
 
   HTTPClient http;
-  // Your IP address with path or Domain name with URL path 
   http.begin("http://192.168.0.10:3000/tank");
-  // Send HTTP POST request
   http.addHeader("Content-Type", "application/json");
   char output[128];
   const size_t size = JSON_OBJECT_SIZE(4);
@@ -53,16 +60,8 @@ void loop() {
     Serial.print("Error code: ");
     Serial.println(httpResponseCode);
     }
-  // Free resources
   Serial.println(payload);
   delay(5000);
   http.end();
 }
 
-const int tempsensor = 34;
-
-//lm35 temperature sensor conversion 
-int getWaterLevel(){ 
-  float waterlevel=(((analogRead(tempsensor)/4095)*5)/0.01);
-  return waterlevel;
-}
