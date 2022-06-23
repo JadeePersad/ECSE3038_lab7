@@ -1,0 +1,6 @@
+.venv
+app.dev.py
+.env
+*.dev.py
+.DS_Store
+.vscode
